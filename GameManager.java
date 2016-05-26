@@ -12,6 +12,7 @@ public class GameManager {
         _taskList.add(new Fps());
         _taskList.add(new Ball());
         _taskList.add(new Block());
+        _taskList.add(new Bar());
     }
 
     public boolean onUpdate(){

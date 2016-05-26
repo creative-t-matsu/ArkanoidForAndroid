@@ -14,6 +14,48 @@ public class Block extends Task{
         boolean disPlay;
     }
 
+    blockClass bc[][] = new blockClass[5][4];
+
+    public Block(){
+        for(int i = 0; i < 5;i++){
+            for(int j = 0; j < 4;j++){
+                bc[i][j] = new blockClass();
+                bc[i][j].disPlay = true;
+
+                bc[i][j].x = i * 170;
+                bc[i][j].y = j * 50;
+            }
+        }
+
+        paint.setColor(Color.MAGENTA);
+        paint.setAntiAlias(true);
+    }
+
+    @Override
+    public boolean onUpdate(){
+        for(int i= 0;i < 5;i++){
+            for(int j = 0; j < 4;j++){
+                if(bc[i][j].disPlay && (Ball.x - bc[i][j].x) > 0 && (Ball.x - bc[i][j].x) < 150 && (Ball.y - bc[i][j].y) > 0 && (Ball.y - bc[i][j].y) < 40){
+                    bc[i][j].disPlay = false;
+                    Ball.speed_y *= -1;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public  void onDraw(Canvas canvas) {
+        for(int i= 0;i < 5;i++){
+            for(int j = 0; j < 4;j++) {
+                if (bc[i][j].disPlay)
+                    canvas.drawRect(bc[i][j].x + 10, bc[i][j].y, bc[i][j].x + 150, bc[i][j].y + 40, paint);
+            }
+        }
+    }
+
+/*
+    //---1次元配列---//
     blockClass bc[]= new blockClass[blockQuantity];
 
     public Block(){
@@ -24,8 +66,8 @@ public class Block extends Task{
             bc[i] = new blockClass();
             bc[i].disPlay = true;
 
-            bc[i].x = counter_x * 60;
-            bc[i].y = counter_y * 20;
+            bc[i].x = counter_x * 150;
+            bc[i].y = counter_y * 50;
 
             counter_x++;
 
@@ -42,10 +84,10 @@ public class Block extends Task{
     @Override
     public boolean onUpdate(){
         for(int i= 0;i < blockQuantity;i++){
-            if((Ball.x - bc[i].x) < 30 && (Ball.y - bc[i].y) < 10)
+            if(bc[i].disPlay && (Ball.x - bc[i].x) > 0 && (Ball.x - bc[i].x) < 150 && (Ball.y - bc[i].y) > 0 && (Ball.y - bc[i].y) < 40){
                 bc[i].disPlay = false;
-                Ball.speed_x *= -1;
                 Ball.speed_y *= -1;
+            }
         }
         return true;
     }
@@ -54,7 +96,8 @@ public class Block extends Task{
     public  void onDraw(Canvas canvas) {
         for(int i= 0;i < blockQuantity;i++){
             if(bc[i].disPlay)
-                canvas.drawRect(bc[i].x + 10,bc[i].y,bc[i].x + 60,bc[i].y + 15,paint);
+                canvas.drawRect(bc[i].x + 10,bc[i].y,bc[i].x + 150,bc[i].y + 40,paint);
         }
     }
+    */
 }
