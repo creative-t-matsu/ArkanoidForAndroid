@@ -7,6 +7,7 @@ import android.graphics.Paint;
 public class Block extends Task{
     private Paint paint = new Paint();
     int blockQuantity = 20;
+    boolean hit;
 
     private class blockClass{
         int x;
@@ -22,11 +23,12 @@ public class Block extends Task{
                 bc[i][j] = new blockClass();
                 bc[i][j].disPlay = true;
 
-                bc[i][j].x = i * 170;
-                bc[i][j].y = j * 50;
+                bc[i][j].x = i * 170 + 100;
+                bc[i][j].y = j * 50 + 30;
             }
         }
 
+        hit = false;
         paint.setColor(Color.MAGENTA);
         paint.setAntiAlias(true);
     }
@@ -35,9 +37,37 @@ public class Block extends Task{
     public boolean onUpdate(){
         for(int i= 0;i < 5;i++){
             for(int j = 0; j < 4;j++){
-                if(bc[i][j].disPlay && (Ball.x - bc[i][j].x) > 0 && (Ball.x - bc[i][j].x) < 150 && (Ball.y - bc[i][j].y) > 0 && (Ball.y - bc[i][j].y) < 40){
-                    bc[i][j].disPlay = false;
-                    Ball.speed_y *= -1;
+                if(bc[i][j].disPlay && Math.abs(Ball.x - bc[i][j].x) <= 95  && Math.abs(Ball.y - bc[i][j].y) <= 40){
+                    hit = true;
+                }
+
+                if(hit){
+                    if(Math.abs(Ball.x - bc[i][j].x) > 120 && Math.abs(Ball.y - bc[i][j].y) > 40){
+                        if(120 - Math.abs(Ball.x - bc[i][j].x) == 40 - Math.abs(Ball.y - bc[i][j].y)){
+                            Ball.speed_x *= -1;
+                            Ball.speed_y *= -1;
+                            bc[i][j].disPlay = false;
+                            hit = false;
+                        }else if(120 - Math.abs(Ball.x - bc[i][j].x) > 40 - Math.abs(Ball.y - bc[i][j].y)){
+                            Ball.speed_y *= -1;
+                            bc[i][j].disPlay = false;
+                            hit = false;
+                        }else if(120 - Math.abs(Ball.x - bc[i][j].x) < 40 - Math.abs(Ball.y - bc[i][j].y)){
+                            Ball.speed_x *= -1;
+                            bc[i][j].disPlay = false;
+                            hit = false;
+                        }
+                    }else{
+                        if(120 - Math.abs(Ball.x - bc[i][j].x) > 40 - Math.abs(Ball.y - bc[i][j].y)){
+                            Ball.speed_y *= -1;
+                            bc[i][j].disPlay = false;
+                            hit = false;
+                        }else {
+                            Ball.speed_x *= -1;
+                            bc[i][j].disPlay = false;
+                            hit = false;
+                        }
+                    }
                 }
             }
         }
@@ -49,7 +79,7 @@ public class Block extends Task{
         for(int i= 0;i < 5;i++){
             for(int j = 0; j < 4;j++) {
                 if (bc[i][j].disPlay)
-                    canvas.drawRect(bc[i][j].x + 10, bc[i][j].y, bc[i][j].x + 150, bc[i][j].y + 40, paint);
+                    canvas.drawRect(bc[i][j].x - 75, bc[i][j].y - 20, bc[i][j].x + 75, bc[i][j].y + 20, paint);
             }
         }
     }
